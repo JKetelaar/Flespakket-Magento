@@ -1,0 +1,71 @@
+<?php
+    if(Mage::helper('flespakket')->getConfig('pakjegemak') == 1)
+    {
+        $username = Mage::helper('flespakket')->getConfig('username');
+        $api_key  = Mage::helper('flespakket')->getConfig('api_key', 'general', true);
+        $webshop  = $this->getUrl('flespakket/index/pakjegemak', array('_secure' => true));
+        $uw_hash  = hash_hmac('sha1', $username . 'Flespakket' . $webshop, $api_key);
+
+        if(!empty($username) && !empty($api_key))
+        {
+?>
+<script type="text/javascript">
+    var shipform = document.getElementById('shipping-new-address-form');
+    if(null === shipform)
+    {
+        // onestepcheckout
+        shipform = document.getElementById('shipping_address_list');
+    }
+    if(null === shipform)
+    {
+        // one page checkout
+        shipform = document.getElementById('ship_form');
+    }
+    var pakjebutton = document.createElement('div');
+    pakjebutton.innerHTML = '<button id="flespakket_pakjegemak" type="button" class="button"><span><span>Kies een PostNL afhaallocatie</span></span></button>';
+
+    shipform.insertBefore(pakjebutton, shipform.firstChild);
+
+    pakjebutton = document.getElementById('flespakket_pakjegemak'); // workaroud - IE 8 could not handle document.createElement('button')
+    pakjebutton.style.margin = '10px 0';
+
+    var pg_popup;
+    pakjebutton.onclick = function()
+    {
+        if(!pg_popup || pg_popup.closed)
+        {
+            pg_popup = window.open(
+                '<?php echo Mage::helper('flespakket')->getConfig('flespakket_url'); ?>/pakjegemak-locatie?hash=<?php echo $uw_hash; ?>&webshop=<?php echo urlencode($webshop); ?>&user=<?php echo $username; ?>',
+                'flespakket_pakjegemak',
+                'width=980,height=680,dependent,resizable,scrollbars'
+            );
+            if(window.focus) { pg_popup.focus(); }
+        }
+        else
+        {
+            pg_popup.focus();
+        }
+        return false;
+    }
+
+    /*
+     * add trigger event to simulate the change of a selectbox
+     */
+    Element.prototype.triggerEvent = function(eventName)
+    {
+        if (document.createEvent)
+        {
+            var evt = document.createEvent('HTMLEvents');
+            evt.initEvent(eventName, true, true);
+
+            return this.dispatchEvent(evt);
+        }
+
+        if (this.fireEvent)
+            return this.fireEvent('on' + eventName);
+    }
+</script>
+<?php
+        }
+    }
+?>

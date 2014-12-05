@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+
+    <checkout_onepage_index>
+        <reference name="before_body_end">
+            <block type="core/template" name="flespakket" template="flespakket/flespakket.js.phtml" />
+        </reference>
+    </checkout_onepage_index>
+
+    <onestepcheckout_index_index>
+        <reference name="before_body_end">
+            <block type="core/template" name="flespakket" template="flespakket/flespakket.js.phtml" />
+        </reference>
+    </onestepcheckout_index_index>
+
+    <onepagecheckout_index_index>
+        <reference name="before_body_end">
+            <block type="core/template" name="flespakket" template="flespakket/flespakket.js.phtml" />
+        </reference>
+    </onepagecheckout_index_index>
+
+    <flespakket_index_post>
+        <reference name="root">
+            <action method="setTemplate"><template>flespakket/popup.phtml</template></action>
+            <!-- Mark root page block that template is applied -->
+            <action method="setIsHandle"><applied>1</applied></action>
+        </reference>
+        <reference name="content">
+            <block type="flespakket/post" name="flespakket.post" template="flespakket/post.phtml"></block>
+        </reference>
+    </flespakket_index_post>
+
+    <flespakket_index_label>
+        <reference name="root">
+            <action method="setTemplate"><template>flespakket/popup.phtml</template></action>
+            <!-- Mark root page block that template is applied -->
+            <action method="setIsHandle"><applied>1</applied></action>
+        </reference>
+        <reference name="content">
+            <block type="flespakket/label" name="flespakket.label" template="flespakket/label.phtml"></block>
+        </reference>
+    </flespakket_index_label>
+
+    <flespakket_index_return>
+        <reference name="root">
+            <action method="setTemplate"><template>flespakket/popup.phtml</template></action>
+            <!-- Mark root page block that template is applied -->
+            <action method="setIsHandle"><applied>1</applied></action>
+        </reference>
+        <reference name="content">
+            <block type="flespakket/return" name="flespakket.return" template="flespakket/return.phtml"></block>
+        </reference>
+    </flespakket_index_return>
+
+    <flespakket_index_batch>
+        <reference name="root">
+            <action method="setTemplate"><template>flespakket/popup.phtml</template></action>
+            <!-- Mark root page block that template is applied -->
+            <action method="setIsHandle"><applied>1</applied></action>
+        </reference>
+        <reference name="content">
+            <block type="flespakket/batch" name="flespakket.batch" template="flespakket/batch.phtml"></block>
+        </reference>
+    </flespakket_index_batch>
+
+    <flespakket_index_batchreturn>
+        <reference name="root">
+            <action method="setTemplate"><template>flespakket/popup.phtml</template></action>
+            <!-- Mark root page block that template is applied -->
+            <action method="setIsHandle"><applied>1</applied></action>
+        </reference>
+        <reference name="content">
+            <block type="flespakket/batchreturn" name="flespakket.batchreturn" template="flespakket/batchreturn.phtml"></block>
+        </reference>
+    </flespakket_index_batchreturn>
+
+</layout>

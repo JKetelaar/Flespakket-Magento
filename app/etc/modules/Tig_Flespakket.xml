@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Tig_Flespakket>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Tig_Flespakket>
+    </modules>
+</config>

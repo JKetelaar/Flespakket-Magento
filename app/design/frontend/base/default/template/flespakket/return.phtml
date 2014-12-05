@@ -1,0 +1,17 @@
+<h4>Sending data back to webshop ...</h4>
+<div id="other-messages" style="display:none;">
+    <h4>Zending <?php echo $this->getConsignmentId(); ?> aangemaakt [<a href="<?php echo Mage::helper('flespakket')->getConfig('flespakket_url'); ?>/plugin/label/<?php echo $this->getConsignmentId(); ?>">label bekijken</a>]</h4>
+    <p>Order overzicht kon niet ververst worden, aangemaakte zendingen pas zichtbaar na pagina refresh (F5).</p>
+    <h4><a href="#" onclick="window.close(); return false;">Click here to close this window and return to webshop</a></h4>
+</div>
+<script type="text/javascript">
+document.observe('dom:loaded', function(){
+    if(!window.opener)
+    {
+        $('other-messages').show();
+        return;
+    }
+    window.opener.sales_order_gridJsObject.resetFilter();
+    window.close();
+});
+</script>

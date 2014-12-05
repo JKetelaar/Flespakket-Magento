@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <adminhtml_sales_order_index>
+        <reference name="before_body_end">
+            <block type="core/template" name="flespakket" template="flespakket/flespakket.js.phtml" />
+        </reference>
+    </adminhtml_sales_order_index>
+</layout>

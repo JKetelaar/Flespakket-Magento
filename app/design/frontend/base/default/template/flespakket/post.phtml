@@ -1,0 +1,49 @@
+<h4>Sending data to Flespakket ...</h4>
+<form
+    action="<?php echo htmlspecialchars($this->getFlespakketPostUrl()); ?>"
+    method="post"
+    id="flespakket-create-consignment"
+    style=""
+    >
+    <?php
+    $form = $this->getFormParams();
+    $bottles = $form['package'];
+    if ($bottles > 180){
+        die("Error: Flespakket staat een maximum van 180 flessen toe.");
+    }
+    $bottle_options = array(1, 2, 3, 6, 12, 18);
+
+    $form['colli_amount'] = (int)ceil($bottles / 18);
+    $form['package'] = "bottle_" . getClosest($bottles, $bottle_options);
+    if ($bottles > 18) {
+        $bottles -= 18;
+        $package = 2;
+        for ($i = $bottles; $i > 0; $i -= 18) {
+            $form['MultiColli[package_' . $package++ . ']'] = 'bottle_' . getClosest($i, $bottle_options);
+        }
+    }
+
+    foreach ($form as $param => $value) {
+        echo ('<input type="text" name="' .  htmlspecialchars($param) . '" value="' . htmlspecialchars($value) . '" />');
+    }
+    ?>
+</form>
+
+<script type="text/javascript">
+    document.observe('dom:loaded', function(){
+        document.getElementById('flespakket-create-consignment').submit();
+    });
+</script>
+
+<?php
+function getClosest($search, $bottle_options) {
+    if ($search >= 18) {
+        return 18;
+    }
+    foreach ($bottle_options as $option) {
+        if ($search <= $option) {
+            return $option;
+        }
+    }
+}
+?>

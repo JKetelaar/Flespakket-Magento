@@ -1,0 +1,179 @@
+<?php $defaultStore = Mage::helper('flespakket')->getConfig('default_store'); ?>
+<script type="text/javascript">
+var lastBatchCount = 0;
+(function(){
+    var popup = (function(){
+        var obj, handle;
+
+        function labelOpen(url)
+        {
+            obj.open(url, 'flespakket_label', 500, 300);
+            return this;
+        }
+
+        return obj = {
+            isOpen: function(){
+                return handle && !handle.closed;
+            },
+
+            focus: function(){
+                if(this.isOpen() && window.focus) { handle.focus(); }
+                return this;
+            },
+
+            open: function(url, name, width, height){
+                handle = window.open(url, name, 'width=' + width + ',height=' + height + ',dependent,resizable,scrollbars');
+                if (window.focus) { handle.focus(); }
+                return this;
+            },
+
+            labelOpenConsignmentId: function(consignmentId){
+                labelOpen('<?php echo Mage::app()->getStore($defaultStore)->getUrl('flespakket/index/label', array('_secure' => true)); ?>consignment_id/' + consignmentId);
+                return this;
+            },
+
+            labelOpenOrderIds: function(orderIds){
+                labelOpen('<?php echo Mage::app()->getStore($defaultStore)->getUrl('flespakket/index/label', array('_secure' => true)); ?>order_ids/' + orderIds.join('|'));
+                return this;
+            },
+
+            processOpenOrderIds: function(orderIds, orderPackages){
+                var timestamp = _getTimestamp();
+                lastBatchCount = orderIds.length;
+
+                return (orderIds.length > 0 && confirm("This will create   " + lastBatchCount + "   labels.\n\nAre you sure?"))
+                ? this.open('<?php echo Mage::app()->getStore($defaultStore)->getUrl('flespakket/index/batch', array('_secure' => true)); ?>order_ids/' + orderIds.join('|') + '/order_packages/' + orderPackages.join('|') + '/timestamp/' + timestamp, 'flespakket_batch', 500, 300)
+                : false;
+            },
+
+            close: function(){
+                if (handle) { handle.close(); }
+                return this;
+            }
+        };
+    })();
+
+    var consignments = {}; // Hyperlinks to consignments that haven't been processed yet
+    var locked = false;    // Lock to prevent more than one consignment being created at a time
+
+    function getLabel(event, elem)
+    {
+        var consignmentId = elem.getAttribute('data-consignment-id');
+        popup.labelOpenConsignmentId(consignmentId);
+        return false;
+    }
+
+    var lastTimestamp = 0;
+    function _getTimestamp() {
+        var ret = Math.round(new Date().getTime() / 1000);
+        if (ret <= lastTimestamp) {
+            ret = lastTimestamp + 1; // Make sure it is unique
+        }
+        return lastTimestamp = ret;
+    }
+
+    function getSelectedPackage(orderId)
+    {
+        var flespakket_package = document.getElementById('flespakket_package_' + orderId);
+
+        return flespakket_package.options[flespakket_package.selectedIndex].value;
+    }
+
+    function createNewConsignment(event, elem, isRetour)
+    {
+        if (locked) {
+            if (popup.isOpen()) {
+                popup.focus();
+                alert('Consignment is already being processed');
+                return;
+            }
+        }
+        locked = true;
+        var orderId   = elem.getAttribute('data-id');
+        var data      = elem.getAttribute('data-consignment'); // URL-encoded data
+        var timestamp = _getTimestamp();
+
+        if(!isRetour)
+        {
+            // if empty, Flespakket will take the default package from the user
+            var selectedPackage = getSelectedPackage(orderId);
+        }
+        else
+        {
+            selectedPackage = 'other';
+        }
+        data += '&package=' + selectedPackage;
+
+
+        if (!consignments[orderId]) { consignments[orderId] = {}; }
+        consignments[orderId][timestamp] = { insertLocation: elem.up('td').previous('td') };
+
+        popup.open(
+            '<?php echo Mage::app()->getStore($defaultStore)->getUrl('flespakket/index/post', array('_secure' => true)); ?>' +
+                '?order_id=' + orderId +
+                '&timestamp=' + timestamp +
+                (data ? '&' + data : '') +
+                '&is_retour=' + (isRetour ? '1' : '0'),
+            'flespakket', 720, 860);
+        return false;
+    }
+
+    function createNewConsignmentRetour(event, elem)
+    {
+        return createNewConsignment(event, elem, true);
+    }
+
+    function onMassActionButtonClick(event)
+    {
+        var select = $('sales_order_grid_massaction-select');
+        if (!select) {
+            alert("Element 'sales_order_grid_massaction-select' not found");
+            return;
+        }
+        var selectValue = select.getValue();
+
+        if(selectValue != 'print_flespakket_labels'
+        && selectValue != 'process_with_flespakket') return;
+
+        var orderIds = [];
+        var orderPackages = [];
+        $$('input.massaction-checkbox:checked').each(function(elem) {
+            orderIds.push(elem.getValue());
+            if(selectedPackage = getSelectedPackage(elem.getValue()))
+            {
+                orderPackages.push(selectedPackage);
+            }
+        });
+        if (!orderIds.length) return;
+
+        switch (selectValue)
+        {
+            case 'print_flespakket_labels':
+                popup.labelOpenOrderIds(orderIds);
+                break;
+            case 'process_with_flespakket':
+                popup.processOpenOrderIds(orderIds, orderPackages);
+                break;
+        }
+    }
+
+    document.observe('click', function(e, el){
+        if (el = e.findElement('.flespakket-consignment-label')) {
+            getLabel(e, el);
+            e.stop();
+        }
+        if (el = e.findElement('.flespakket-consignment-new')) {
+            createNewConsignment(e, el);
+            e.stop();
+        }
+        if (el = e.findElement('.flespakket-consignment-retour-new')) {
+            createNewConsignmentRetour(e, el);
+            e.stop();
+        }
+        if (el = e.findElement('form#sales_order_grid_massaction-form button')) {
+            onMassActionButtonClick(e, el);
+            e.stop();
+        }
+    });
+})();
+</script>

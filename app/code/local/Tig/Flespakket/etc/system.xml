@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <tabs>
+        <flespakket_tab translate="label" module="flespakket">
+            <label>Flespakket</label>
+            <sort_order>401</sort_order>
+        </flespakket_tab>
+    </tabs>
+    <sections>
+        <flespakket translate="label" module="flespakket">
+            <label>Flespakket</label>
+            <tab>flespakket_tab</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>360</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <flespakket_support translate="label">
+                    <label>Informatie</label>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <support>
+                            <sort_order>10</sort_order>
+                            <frontend_model>flespakket/adminhtml_system_config_supportTab</frontend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </support>
+                    </fields>
+                </flespakket_support>
+                <flespakket_general translate="label comment tooltip">
+                    <label>Configuratie</label>
+                    <sort_order>200</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <print_size translate="label comment tooltip">
+                            <label>Default print formaat</label>
+                            <tooltip>Laat leeg voor een keuze per print actie</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>flespakket/system_config_source_printSize</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </print_size>
+                        <username translate="label comment tooltip">
+                            <label>Flespakket username</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </username>
+                        <api_key translate="label comment tooltip">
+                            <label>Flespakket API key</label>
+                            <tooltip>U kunt deze aanvragen bij Flespakket</tooltip>
+                            <comment>Nodig als u PakjeGemak of Track&amp;Trace mail gebruikt</comment>
+                            <frontend_type>obscure</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </api_key>
+                        <pakjegemak translate="label comment tooltip">
+                            <label>PakjeGemak actief</label>
+                            <tooltip>Vereist username en API key</tooltip>
+                            <comment>Flush de Magento cache na het wijzigen hiervan</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </pakjegemak>
+                        <tracktrace translate="label comment tooltip">
+                            <label>Track&amp;Trace actief</label>
+                            <tooltip>Vereist username en API key</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </tracktrace>
+                        <tracktrace_template translate="label comment tooltip">
+                            <label>Track&amp;Trace email template</label>
+                            <tooltip>U kunt een nieuwe transactionele email aanmaken en daarin {{var tracktrace_url}} en {{var retourlabel_url}} gebruiken. U kunt deze baseren op het Order Update template, want {{var order}} is ook beschikbaar.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <tracktrace>1</tracktrace>
+                            </depends>
+                        </tracktrace_template>
+                        <tracktrace_identity translate="label comment tooltip">
+                            <label>Track&amp;Trace afzender</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_identity</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <tracktrace>1</tracktrace>
+                            </depends>
+                        </tracktrace_identity>
+                        <tracktrace_bcc translate="label comment tooltip">
+                            <label>Track&amp;Trace BCC</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </tracktrace_bcc>
+                        <tracktrace_bcc_email translate="label comment tooltip">
+                            <label>Track&amp;Trace BCC email</label>
+                            <comment>Dit dient 1 e-mailadres te zijn</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <tracktrace_bcc>1</tracktrace_bcc>
+                            </depends>
+                        </tracktrace_bcc_email>
+                        <default_store translate="label comment tooltip">
+                            <label>Open popups met Store View</label>
+                            <tooltip>Ziet u bij het aanmaken van een zending uw homepage of een foutmelding in de popup? Dat ligt waarschijnlijk aan de Magento routes. Kies hier een Store View van een actieve website en probeer de popup opnieuw.</tooltip>
+                            <comment>Wijzigen indien de order popups niet correct werken</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>flespakket/system_config_source_store</source_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </default_store>
+                        <status_updates translate="label comment tooltip">
+                            <label>Status updates</label>
+                            <tooltip>Periodiek de verzendstatus bij Flespakket opvragen</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </status_updates>
+                        <all_in_one translate="label comment tooltip">
+                            <label>All in one</label>
+                            <tooltip>Wanneer op ja wordt het systeem zo geregeld dat het niet uitmaakt dat alle flessen in 1 doos gaan. (Bij gebundelde producten op nee)</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </all_in_one>
+                    </fields>
+                </flespakket_general>
+            </groups>
+        </flespakket>
+    </sections>
+</config>

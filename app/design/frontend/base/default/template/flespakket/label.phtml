@@ -1,0 +1,28 @@
+<?php
+    if($this->getConsignmentIds() === null)
+    {
+        echo '<h4>No consignments selected to be printed</h4>';
+        return;
+    }
+
+    $labelLink = $this->getLabelUrl();
+    $printSize = Mage::helper('flespakket')->getConfig('print_size');
+
+    switch($printSize)
+    {
+        case '4':
+            $labelLink .= '?perpage=0';
+            break;
+
+        case '6':
+            $labelLink .= '?perpage=1';
+            break;
+    }
+?>
+<h4>Requesting label from Flespakket ...</h4>
+<h4><a href="<?php echo $labelLink; ?>">Click here if the download does not start in a few seconds</a></h4>
+<script type="text/javascript">
+document.observe('dom:loaded', function(){
+    top.location.href = '<?php echo $labelLink; ?>';
+});
+</script>

@@ -1,0 +1,36 @@
+<tr>
+    <td>
+        <img src="//www.flespakket.nl/images/emails/flespakket-logo-email.png" style="float:right;" />
+        <h1>
+            Flespakket module versie <?php echo Mage::getConfig()->getModuleConfig('Tig_Flespakket')->version; ?>
+        </h1>
+        <p>
+            Getest met Magento CE 1.4.2, 1.5.1, 1.6.2, 1.7.0, 1.8.1 en 1.9.0.
+            Flush de <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/cache/index'); ?>">Magento cache</a> na de installatie van de module.
+        </p>
+        <p>Voor meer informatie: <a href="http://www.flespakket.nl" target="_blank">http://www.flespakket.nl</a></p>
+        <p>Voor vragen over de module: <a href="mailto:info@flespakket.nl">info@flespakket.nl</a></p>
+        <p>
+            <strong>PakjeGemak</strong> activeren zorgt voor een knop in het Shipping Information gedeelte van de standaard checkout pagina.<br/>
+            Gebruikt u een ander template? Pas dan uw layout XML aan zodat het template <code style="color:#58585A">flespakket/flespakket.js.phtml</code> geladen wordt.<br/>
+            Gebruikt u een andere checkout module? Dan zult u waarschijnlijk het template <code style="color:#58585A">flespakket/pakjegemak.phtml</code> moeten overloaden en regel 74 t/m 87 aanpassen.
+        </p>
+        <p>
+            <strong>Track&amp;Trace</strong> activeren zorgt voor een email naar de klant wanneer u een Flespakket zending aanmaakt bij een order.<br/>
+            U kunt het email template hiervoor aanmaken in System &gt; Transactional Emails en voor het gemak baseren op het Order Update template.<br/>
+            Let erop dat u de tracktrace_url en retourlabel_url variabelen nog in een link kunt verwerken, bijvoorbeeld: <code style="color:#58585A">&lt;a href="{{var tracktrace_url}}" target="_blank"&gt;track&amp;trace link&lt;/a&gt;</code>
+        </p>
+    </td>
+</tr>
+<style type="text/css">
+    #flespakket_flespakket_support table { width:100%; }
+</style>
+<script type="text/javascript">
+document.observe('dom:loaded', function(){
+    var defaultteplate = document.getElementById('flespakket_flespakket_general_tracktrace_template').options[0];
+    if(defaultteplate.value == 'flespakket_flespakket_general_tracktrace_template')
+    {
+        defaultteplate.innerHTML = '';
+    }
+});
+</script>

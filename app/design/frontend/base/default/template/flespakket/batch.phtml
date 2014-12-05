@@ -1,0 +1,55 @@
+<h4>Sending data to Flespakket ...</h4>
+<form
+    action="<?php echo htmlspecialchars($this->getFlespakketPostUrl()); ?>"
+    method="post"
+    id="flespakket-create-consignmentbatch"
+    style="">
+    <?php
+    if (Mage::helper('flespakket')->getConfig('all_in_one') == 1) {
+        $bottle_options = array(1, 2, 3, 6, 12, 18);
+        foreach ($this->getFormParams() as $param => $value) {
+            $value = unserialize($value);
+            $bottles = $value['package'];
+            if ($bottles > 180){
+                die("Error: Flespakket staat een maximum van 180 flessen toe.");
+            }
+            $value['colli_amount'] = (int)ceil($bottles / 18);
+            $value['package'] = "bottle_" . getClosest($bottles, $bottle_options);
+            if ($bottles > 18) {
+                $bottles -= 18;
+                $value['MultiColli'] = array();
+                $package = 2;
+                for ($i = $bottles; $i > 0; $i -= 18) {
+                    $value['MultiColli']['package_' . $package++] = 'bottle_' . getClosest($i, $bottle_options);
+                }
+            }
+            $value = serialize($value);
+            echo '<input type="text" name="' . htmlspecialchars($param) . '" value="' . htmlspecialchars($value) . '" />';
+        }
+    }else{
+        foreach($this->getFormParams() as $param => $value){
+            echo '<input type="text" name="' . htmlspecialchars($param) . '" value="' . htmlspecialchars($value) . '" />';
+        }
+    }
+    ?>
+</form>
+<script type="text/javascript">
+    document.observe('dom:loaded', function () {
+        document.getElementById('flespakket-create-consignmentbatch').submit();
+    });
+</script>
+
+<?php
+function getClosest($search, $bottle_options) {
+    if ($search >= 18) {
+        return 18;
+    }
+    foreach ($bottle_options as $option) {
+        if ($search <= $option) {
+            return $option;
+        }
+    }
+}
+?>
+
+<?php
