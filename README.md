@@ -15,4 +15,4 @@ The installation works like the default flespakket plugin for Magento.
 If you do not know how the default one works, then please head to the flespakket site and request their installation package for Magento.
 
 ### License
-This plugin is made by Jeroen Ketelaar and may not be used without permission from Jeroen Ketelaar.
+This plugin is made by Jeroen Ketelaar and may not be used without [permission from Jeroen Ketelaar](mailto:jeroen@ketelaar.me).
