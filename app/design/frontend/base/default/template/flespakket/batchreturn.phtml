@@ -11,7 +11,7 @@ document.observe('dom:loaded', function(){
         $('other-messages').show();
         return;
     }
-    window.opener.sales_order_gridJsObject.resetFilter();
+    window.opener.sales_order_gridJsObject.doFilter();
     if('<?php echo $this->countConsignmentIds(); ?>' < window.opener.lastBatchCount)
     {
         alert('Door onvoldoende verzendrecht of onvolledige data slechts ' + <?php echo $this->countConsignmentIds(); ?> + ' van de ' + window.opener.lastBatchCount + ' zendingen aangemaakt. Verwerk de rest handmatig a.u.b.');
